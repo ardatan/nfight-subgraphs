@@ -1,0 +1,29 @@
+specVersion: 0.0.2
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: NFightChildUpgradeable
+    network: mumbai
+    source:
+      address: "0xaA6aeBEde588A789d9fE4E6CB86A61bD662E26c1"
+      abi: NFightChildUpgradeable
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - AdminChanged
+        - BeaconUpgraded
+        - Upgraded
+      abis:
+        - name: NFightChildUpgradeable
+          file: ./abis/NFightChildUpgradeable.json
+      eventHandlers:
+        - event: AdminChanged(address,address)
+          handler: handleAdminChanged
+        - event: BeaconUpgraded(indexed address)
+          handler: handleBeaconUpgraded
+        - event: Upgraded(indexed address)
+          handler: handleUpgraded
+      file: ./src/mapping.ts

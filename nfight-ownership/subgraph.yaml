@@ -1,0 +1,46 @@
+specVersion: 0.0.2
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: NFightParent
+    network: goerli
+    source:
+      address: "0x9e747cB6EC565E5A001c3a45B3e2Ca5bbd722E9C"
+      abi: NFightParent
+      startBlock: 6225889
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - Project
+      abis:
+        - name: NFightParent
+          file: ./abis/NFightParent.json
+      eventHandlers:
+        - event: ProjectRegistered(indexed address)
+          handler: handleProjectRegistered
+        - event: TokenRegistered(indexed address,indexed uint256,indexed address)
+          handler: handleTokenRegistered
+      file: ./src/mapping.ts
+templates:
+  - name: Project
+    kind: ethereum/contract
+    network: goerli
+    source:
+      abi: ERC721Transfer
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      file: ./src/mappings/project.ts
+      entities:
+        - Project
+      abis:
+        - name: ERC721Transfer
+          file: ./abis/ERC721Transfer.json
+      eventHandlers:
+        - event: Transfer(indexed address,indexed address,indexed uint256)
+          handler: handleTransfer
+        

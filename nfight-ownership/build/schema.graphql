@@ -1,0 +1,12 @@
+type Project @entity {
+  id: ID!
+  contractAddress: Bytes! # address
+  tokens: [Token!]
+}
+
+type Token @entity {
+  id: ID!
+  project: Project!
+  owner: Bytes!
+  tokenId: BigInt!
+}
