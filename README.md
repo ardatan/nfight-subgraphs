@@ -10,5 +10,6 @@ The Ownership subgraph listens to the NFightParent contract. When a enw project 
 
 The Gamedata subgraph indexes events from the Polygon child contract that update the current skill levels for an nFighter.
 
-• https://thegraph.com/hosted-service/subgraph/sbauch/nfight-ownership
-• https://thegraph.com/hosted-service/subgraph/sbauch/nfight-gamedata
+https://thegraph.com/hosted-service/subgraph/sbauch/nfight-ownership
+
+https://thegraph.com/hosted-service/subgraph/sbauch/nfight-gamedata
