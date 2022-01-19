@@ -1,6 +1,6 @@
 specVersion: 0.0.2
 schema:
-  file: ./schema.graphql
+  file: schema.graphql
 dataSources:
   - kind: ethereum
     name: NFightChildUpgradeable
@@ -17,8 +17,8 @@ dataSources:
         - Fighter
       abis:
         - name: NFightChildUpgradeable
-          file: ./abis/NFightChildUpgradeable.json
+          file: NFightChildUpgradeable/abis/NFightChildUpgradeable.json
       eventHandlers:
         - event: FighterUpdated(address,uint256,address,uint256,uint256,uint256,uint256,uint256,uint256)
           handler: handleFighterUpdated
-      file: ./src/mapping.ts
+      file: NFightChildUpgradeable/NFightChildUpgradeable.wasm

@@ -74,3 +74,137 @@ export class ExampleEntity extends Entity {
     this.set("newAdmin", Value.fromBytes(value));
   }
 }
+
+export class Fighter extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+
+    this.set("contractAddress", Value.fromBytes(Bytes.empty()));
+    this.set("tokenId", Value.fromBigInt(BigInt.zero()));
+    this.set("aggression", Value.fromBigInt(BigInt.zero()));
+    this.set("awareness", Value.fromBigInt(BigInt.zero()));
+    this.set("determination", Value.fromBigInt(BigInt.zero()));
+    this.set("power", Value.fromBigInt(BigInt.zero()));
+    this.set("resilience", Value.fromBigInt(BigInt.zero()));
+    this.set("speed", Value.fromBigInt(BigInt.zero()));
+    this.set("aggregatePoints", Value.fromBigInt(BigInt.zero()));
+    this.set("owner", Value.fromBytes(Bytes.empty()));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save Fighter entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save Fighter entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("Fighter", id.toString(), this);
+    }
+  }
+
+  static load(id: string): Fighter | null {
+    return changetype<Fighter | null>(store.get("Fighter", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get contractAddress(): Bytes {
+    let value = this.get("contractAddress");
+    return value!.toBytes();
+  }
+
+  set contractAddress(value: Bytes) {
+    this.set("contractAddress", Value.fromBytes(value));
+  }
+
+  get tokenId(): BigInt {
+    let value = this.get("tokenId");
+    return value!.toBigInt();
+  }
+
+  set tokenId(value: BigInt) {
+    this.set("tokenId", Value.fromBigInt(value));
+  }
+
+  get aggression(): BigInt {
+    let value = this.get("aggression");
+    return value!.toBigInt();
+  }
+
+  set aggression(value: BigInt) {
+    this.set("aggression", Value.fromBigInt(value));
+  }
+
+  get awareness(): BigInt {
+    let value = this.get("awareness");
+    return value!.toBigInt();
+  }
+
+  set awareness(value: BigInt) {
+    this.set("awareness", Value.fromBigInt(value));
+  }
+
+  get determination(): BigInt {
+    let value = this.get("determination");
+    return value!.toBigInt();
+  }
+
+  set determination(value: BigInt) {
+    this.set("determination", Value.fromBigInt(value));
+  }
+
+  get power(): BigInt {
+    let value = this.get("power");
+    return value!.toBigInt();
+  }
+
+  set power(value: BigInt) {
+    this.set("power", Value.fromBigInt(value));
+  }
+
+  get resilience(): BigInt {
+    let value = this.get("resilience");
+    return value!.toBigInt();
+  }
+
+  set resilience(value: BigInt) {
+    this.set("resilience", Value.fromBigInt(value));
+  }
+
+  get speed(): BigInt {
+    let value = this.get("speed");
+    return value!.toBigInt();
+  }
+
+  set speed(value: BigInt) {
+    this.set("speed", Value.fromBigInt(value));
+  }
+
+  get aggregatePoints(): BigInt {
+    let value = this.get("aggregatePoints");
+    return value!.toBigInt();
+  }
+
+  set aggregatePoints(value: BigInt) {
+    this.set("aggregatePoints", Value.fromBigInt(value));
+  }
+
+  get owner(): Bytes {
+    let value = this.get("owner");
+    return value!.toBytes();
+  }
+
+  set owner(value: Bytes) {
+    this.set("owner", Value.fromBytes(value));
+  }
+}

@@ -53,13 +53,31 @@ export class Project extends Entity {
   set contractAddress(value: Bytes) {
     this.set("contractAddress", Value.fromBytes(value));
   }
+
+  get fighters(): Array<string> | null {
+    let value = this.get("fighters");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toStringArray();
+    }
+  }
+
+  set fighters(value: Array<string> | null) {
+    if (!value) {
+      this.unset("fighters");
+    } else {
+      this.set("fighters", Value.fromStringArray(<Array<string>>value));
+    }
+  }
 }
 
-export class Token extends Entity {
+export class Fighter extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
 
+    this.set("contractAddress", Value.fromBytes(Bytes.empty()));
     this.set("project", Value.fromString(""));
     this.set("owner", Value.fromBytes(Bytes.empty()));
     this.set("tokenId", Value.fromBigInt(BigInt.zero()));
@@ -67,19 +85,19 @@ export class Token extends Entity {
 
   save(): void {
     let id = this.get("id");
-    assert(id != null, "Cannot save Token entity without an ID");
+    assert(id != null, "Cannot save Fighter entity without an ID");
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        "Cannot save Token entity with non-string ID. " +
+        "Cannot save Fighter entity with non-string ID. " +
           'Considering using .toHex() to convert the "id" to a string.'
       );
-      store.set("Token", id.toString(), this);
+      store.set("Fighter", id.toString(), this);
     }
   }
 
-  static load(id: string): Token | null {
-    return changetype<Token | null>(store.get("Token", id));
+  static load(id: string): Fighter | null {
+    return changetype<Fighter | null>(store.get("Fighter", id));
   }
 
   get id(): string {
@@ -89,6 +107,15 @@ export class Token extends Entity {
 
   set id(value: string) {
     this.set("id", Value.fromString(value));
+  }
+
+  get contractAddress(): Bytes {
+    let value = this.get("contractAddress");
+    return value!.toBytes();
+  }
+
+  set contractAddress(value: Bytes) {
+    this.set("contractAddress", Value.fromBytes(value));
   }
 
   get project(): string {

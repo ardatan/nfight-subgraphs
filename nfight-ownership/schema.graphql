@@ -1,11 +1,12 @@
 type Project @entity {
   id: ID!
   contractAddress: Bytes! # address
-  tokens: [Token!]
+  fighters: [Fighter!]
 }
 
-type Token @entity {
+type Fighter @entity {
   id: ID!
+  contractAddress: Bytes!
   project: Project!
   owner: Bytes!
   tokenId: BigInt!

@@ -1,14 +1,18 @@
 import {
   Transfer
 } from "../../generated/Templates/Project/ERC721Transfer"
-import { Token } from "../../generated/schema"
+import { Fighter } from "../../generated/schema"
 import { dataSource } from '@graphprotocol/graph-ts'
 
 export function handleTransfer(event: Transfer): void {
   let context = dataSource.context()
   let contractAddress = context.getBytes('contractAddress')
-  let token = new Token(contractAddress.toString() + event.params.tokenId.toString())
-  token.project = contractAddress.toHexString();
-  token.owner = event.params.to;
-  token.save();
+
+  let fighter = Fighter.load(contractAddress.toHexString() + event.params.tokenId.toString())
+  
+  if (fighter != null) {
+    fighter.owner = event.params.to;
+    fighter.save();
+  }
+  
 }

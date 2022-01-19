@@ -3,7 +3,7 @@ import {
   TokenRegistered
 } from "../generated/NFightParent/NFightParent"
 import { Project } from "../generated/templates"
-import { Project as ProjectEntity, Token } from "../generated/schema"
+import { Project as ProjectEntity, Fighter } from "../generated/schema"
 import { DataSourceContext } from "@graphprotocol/graph-ts";
 
 export function handleProjectRegistered(event: ProjectRegistered): void {
@@ -18,10 +18,16 @@ export function handleProjectRegistered(event: ProjectRegistered): void {
 
 
 export function handleTokenRegistered(event: TokenRegistered): void {
-  let token = new Token(event.params.contractAddress.toHexString() + event.params.tokenId.toString())
-  token.project = event.params.contractAddress.toHexString();
-  token.tokenId = event.params.tokenId
-  token.owner = event.params.owner;
-  token.save();
+  let project = ProjectEntity.load(event.params.contractAddress.toHexString());
+  
+  if (project != null) {
+    let fighter = new Fighter(event.params.contractAddress.toHexString() + event.params.tokenId.toString())
+    fighter.contractAddress = event.params.contractAddress;
+    fighter.project = project.id
+    fighter.tokenId = event.params.tokenId
+    fighter.owner = event.params.owner;
+    fighter.save();
+  }
+  
 }
 
