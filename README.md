@@ -20,7 +20,7 @@ You should only query the **un-prefixed** entities - the prefixed entities are s
 
 ## nfight-ownership
 
-The Ownership subgraph listens to the NFightParent contract. When a new project registers, we also being listening to `Transfer` events from that NFT contract. This allows us to maintain our own up-to-date index of L1 ownership for nFighters.
+The Ownership subgraph listens to the NFightParent contract. When a new project registers, we begin listening to `Transfer` events from that NFT contract by using [The Graph data source templates](https://thegraph.com/docs/en/developer/create-subgraph-hosted/#data-source-templates). This allows us to maintain our own up-to-date index of L1 ownership for nFighters.
 
 https://thegraph.com/hosted-service/subgraph/sbauch/nfight-ownership
 
