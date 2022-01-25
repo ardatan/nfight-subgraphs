@@ -1,1 +1,1 @@
-web: yarn mesh start
+web: yarn mesh start --port $PORT
