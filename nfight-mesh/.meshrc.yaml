@@ -21,6 +21,7 @@ sources:
             value: SS_
             includeRootOperations: true
             ignore:
+              - SyncStatus
               - Fighter
               - _SubgraphErrorPolicy_
         - typeMerging:
@@ -38,3 +39,4 @@ documents:
 serve:
   browser: true
   playground: true
+  customServerHandler: ./server.js
