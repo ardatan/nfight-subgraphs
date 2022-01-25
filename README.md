@@ -6,7 +6,7 @@ The two subgraphs are stitched together and can be served as a gateway via [Grap
 
 Both subgraphs persist a `Fighter` entity whose id is `${CONTRACT_ADDRESS}${TOKEN_ID}` and one-to-many `SyncStatus` entities.
 
-`Fighter` attributes are merged seamlessly, allowing developers to make a single GraphQL query from their client and receive dat from both L1 and L2 for that entity.
+`Fighter` attributes are merged seamlessly, allowing developers to make a single GraphQL query from their client and receive data from both L1 and L2 for that entity.
 
 Both subgraphs create `SyncStatus` entities associated with a `Fighter`. The most recent `SyncStatus` will report whether Layer 1 ownership data is synced to the Layer 2 protocol.
 
