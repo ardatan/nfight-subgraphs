@@ -39,4 +39,3 @@ documents:
 serve:
   browser: true
   playground: true
-  customServerHandler: ./server.js
