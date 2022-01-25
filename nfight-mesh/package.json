@@ -5,7 +5,8 @@
     "dev": "mesh dev",
     "build": "mesh build",
     "lint": "next lint",
-    "postinstall": "patch-package"
+    "postinstall": "patch-package",
+    "heroku-cleanup": "patch-package"
   },
   "dependencies": {
     "@graphql-mesh/cli": "0.45.0",
@@ -14,13 +15,13 @@
     "@graphql-mesh/transform-type-merging": "0.3.6",
     "apollo-server": "^3.6.2",
     "graphql": "^16.2.0",
+    "patch-package": "^6.4.7",
     "postinstall-postinstall": "^2.1.0"
   },
   "devDependencies": {
     "@types/node": "17.0.10",
     "eslint": "8.7.0",
     "eslint-config-next": "12.0.8",
-    "patch-package": "^6.4.7",
     "typescript": "4.5.4"
   }
 }
