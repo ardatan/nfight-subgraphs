@@ -1,0 +1,18 @@
+query getFightersForAddress($address: Bytes! = "0xc102f76973f4890cab1b5d1ed26f3623381983af") {
+  fighters(where: { owner: $address }) {
+    id # L1 subgraph fields
+    owner
+    contractAddress
+    tokenId
+    aggregatePoints # L2 subgraph fields
+    aggression
+    awareness
+    determination
+    resilience
+    power
+    speed
+    syncs(orderBy: timestamp, first: 1, orderDirection: desc) { # One-to-many entity on both L1 and L2
+      status
+    }
+  }
+}

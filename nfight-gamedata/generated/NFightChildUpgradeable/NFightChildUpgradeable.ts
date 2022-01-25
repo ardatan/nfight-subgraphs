@@ -182,6 +182,32 @@ export class RoleRevoked__Params {
   }
 }
 
+export class TokenRegistered extends ethereum.Event {
+  get params(): TokenRegistered__Params {
+    return new TokenRegistered__Params(this);
+  }
+}
+
+export class TokenRegistered__Params {
+  _event: TokenRegistered;
+
+  constructor(event: TokenRegistered) {
+    this._event = event;
+  }
+
+  get contractAddress(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get tokenId(): BigInt {
+    return this._event.parameters[1].value.toBigInt();
+  }
+
+  get owner(): Address {
+    return this._event.parameters[2].value.toAddress();
+  }
+}
+
 export class NFightChildUpgradeable__getFighterResult {
   value0: BigInt;
   value1: BigInt;

@@ -1,0 +1,40 @@
+sources:
+  - name: ownership
+    handler:
+      graphql:
+        endpoint: https://api.thegraph.com/subgraphs/name/sbauch/nfight-ownership
+      batch: true
+    transforms:
+      - typeMerging:
+          queryFields:
+            # With batching
+            - queryFieldName: fighters
+              keyField: id
+              keyArg: 'where.id_in'
+  
+  - name: savestate
+    handler:
+      graphql:
+        endpoint: https://api.thegraph.com/subgraphs/name/sbauch/nfight-gamedata
+    transforms:
+        - prefix:
+            value: SS_
+            includeRootOperations: true
+            ignore:
+              - Fighter
+              - _SubgraphErrorPolicy_
+        - typeMerging:
+            queryFields:
+              # Without batching
+              - queryFieldName: SS_fighter
+                keyField: id
+                keyArg: id
+
+
+
+documents:
+  - ./operations/**/*.graphql
+
+serve:
+  browser: true
+  playground: true

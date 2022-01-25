@@ -1,7 +1,8 @@
 import {
-  FighterUpdated
+  FighterUpdated,
+  TokenRegistered
 } from "../generated/NFightChildUpgradeable/NFightChildUpgradeable"
-import { Fighter } from "../generated/schema"
+import { Fighter, SyncStatus } from "../generated/schema"
 
 export function handleFighterUpdated(event: FighterUpdated): void {
   let id = event.params.contractAddress.toHexString() + event.params.tokenId.toString();
@@ -24,4 +25,23 @@ export function handleFighterUpdated(event: FighterUpdated): void {
   fighter.tokenId = event.params.tokenId;
 
   fighter.save();
+}
+
+export function handleTokenRegistered(event: TokenRegistered): void {
+  let id = event.params.contractAddress.toHexString() + event.params.tokenId.toString();
+  let fighter = Fighter.load(id);
+ 
+  if (fighter == null) {
+    fighter = new Fighter(id);
+  }
+
+  fighter.contractAddress = event.params.contractAddress;
+  fighter.tokenId = event.params.tokenId;
+  fighter.save();
+
+  let syncStatus = new SyncStatus(event.transaction.hash.toHex() + "-" + event.logIndex.toString())
+  syncStatus.fighter = id;
+  syncStatus.timestamp = event.block.timestamp;
+  syncStatus.status = "Synced";
+  syncStatus.save()
 }

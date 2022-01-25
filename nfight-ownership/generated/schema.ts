@@ -11,7 +11,7 @@ import {
   BigDecimal
 } from "@graphprotocol/graph-ts";
 
-export class Project extends Entity {
+export class NFTProject extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
@@ -21,19 +21,19 @@ export class Project extends Entity {
 
   save(): void {
     let id = this.get("id");
-    assert(id != null, "Cannot save Project entity without an ID");
+    assert(id != null, "Cannot save NFTProject entity without an ID");
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        "Cannot save Project entity with non-string ID. " +
+        "Cannot save NFTProject entity with non-string ID. " +
           'Considering using .toHex() to convert the "id" to a string.'
       );
-      store.set("Project", id.toString(), this);
+      store.set("NFTProject", id.toString(), this);
     }
   }
 
-  static load(id: string): Project | null {
-    return changetype<Project | null>(store.get("Project", id));
+  static load(id: string): NFTProject | null {
+    return changetype<NFTProject | null>(store.get("NFTProject", id));
   }
 
   get id(): string {
@@ -53,23 +53,6 @@ export class Project extends Entity {
   set contractAddress(value: Bytes) {
     this.set("contractAddress", Value.fromBytes(value));
   }
-
-  get fighters(): Array<string> | null {
-    let value = this.get("fighters");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toStringArray();
-    }
-  }
-
-  set fighters(value: Array<string> | null) {
-    if (!value) {
-      this.unset("fighters");
-    } else {
-      this.set("fighters", Value.fromStringArray(<Array<string>>value));
-    }
-  }
 }
 
 export class Fighter extends Entity {
@@ -78,7 +61,6 @@ export class Fighter extends Entity {
     this.set("id", Value.fromString(id));
 
     this.set("contractAddress", Value.fromBytes(Bytes.empty()));
-    this.set("project", Value.fromString(""));
     this.set("owner", Value.fromBytes(Bytes.empty()));
     this.set("tokenId", Value.fromBigInt(BigInt.zero()));
   }
@@ -118,15 +100,6 @@ export class Fighter extends Entity {
     this.set("contractAddress", Value.fromBytes(value));
   }
 
-  get project(): string {
-    let value = this.get("project");
-    return value!.toString();
-  }
-
-  set project(value: string) {
-    this.set("project", Value.fromString(value));
-  }
-
   get owner(): Bytes {
     let value = this.get("owner");
     return value!.toBytes();
@@ -143,5 +116,86 @@ export class Fighter extends Entity {
 
   set tokenId(value: BigInt) {
     this.set("tokenId", Value.fromBigInt(value));
+  }
+
+  get syncs(): Array<string> | null {
+    let value = this.get("syncs");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toStringArray();
+    }
+  }
+
+  set syncs(value: Array<string> | null) {
+    if (!value) {
+      this.unset("syncs");
+    } else {
+      this.set("syncs", Value.fromStringArray(<Array<string>>value));
+    }
+  }
+}
+
+export class SyncStatus extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+
+    this.set("fighter", Value.fromString(""));
+    this.set("timestamp", Value.fromBigInt(BigInt.zero()));
+    this.set("status", Value.fromString(""));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save SyncStatus entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save SyncStatus entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("SyncStatus", id.toString(), this);
+    }
+  }
+
+  static load(id: string): SyncStatus | null {
+    return changetype<SyncStatus | null>(store.get("SyncStatus", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get fighter(): string {
+    let value = this.get("fighter");
+    return value!.toString();
+  }
+
+  set fighter(value: string) {
+    this.set("fighter", Value.fromString(value));
+  }
+
+  get timestamp(): BigInt {
+    let value = this.get("timestamp");
+    return value!.toBigInt();
+  }
+
+  set timestamp(value: BigInt) {
+    this.set("timestamp", Value.fromBigInt(value));
+  }
+
+  get status(): string {
+    let value = this.get("status");
+    return value!.toString();
+  }
+
+  set status(value: string) {
+    this.set("status", Value.fromString(value));
   }
 }

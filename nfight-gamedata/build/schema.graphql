@@ -9,4 +9,18 @@ type Fighter @entity {
   resilience: BigInt!
   speed: BigInt!
   aggregatePoints: BigInt!
+  syncs: [SyncStatus!]
+}
+
+enum SyncStatusEnum {
+  Unsynced
+  Syncing
+  Synced
+}
+
+type SyncStatus @entity {
+  id: ID!
+  fighter: Fighter!
+  timestamp: BigInt!
+  status: SyncStatusEnum!
 }
