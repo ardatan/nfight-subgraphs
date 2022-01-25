@@ -11,13 +11,7 @@ module.exports = async ({ getBuiltMesh, documents, logger }) => {
     plugins: [
       ApolloServerPluginLandingPageGraphQLPlayground
     ],
-    playground: {
-      tabs: documents.map(({ location, rawSDL }) => ({
-        name: location,
-        endpoint: '/graphql',
-        query: rawSDL,
-      })),
-    },
+    introspection: true,
   });
 
   const { url } = await apolloServer.listen(process.env.PORT || 4000);
