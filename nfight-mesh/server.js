@@ -14,6 +14,6 @@ module.exports = async ({ getBuiltMesh, documents, logger }) => {
     },
   });
 
-  const { url } = await apolloServer.listen(4000);
+  const { url } = await apolloServer.listen(process.env.PORT || 4000);
   logger.info(`🚀 Server ready at ${url}`);
 };
