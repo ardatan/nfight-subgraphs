@@ -134,8 +134,8 @@ export class Fighter extends Entity {
     this.set("aggregatePoints", Value.fromBigInt(value));
   }
 
-  get syncs(): Array<string> | null {
-    let value = this.get("syncs");
+  get syncStatuses(): Array<string> | null {
+    let value = this.get("syncStatuses");
     if (!value || value.kind == ValueKind.NULL) {
       return null;
     } else {
@@ -143,11 +143,11 @@ export class Fighter extends Entity {
     }
   }
 
-  set syncs(value: Array<string> | null) {
+  set syncStatuses(value: Array<string> | null) {
     if (!value) {
-      this.unset("syncs");
+      this.unset("syncStatuses");
     } else {
-      this.set("syncs", Value.fromStringArray(<Array<string>>value));
+      this.set("syncStatuses", Value.fromStringArray(<Array<string>>value));
     }
   }
 }

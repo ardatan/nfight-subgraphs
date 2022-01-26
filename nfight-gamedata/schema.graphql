@@ -9,7 +9,7 @@ type Fighter @entity {
   resilience: BigInt!
   speed: BigInt!
   aggregatePoints: BigInt!
-  syncs: [SyncStatus!] @derivedFrom(field: "fighter")
+  syncStatuses: [SyncStatus!] @derivedFrom(field: "fighter")
 }
 
 enum SyncStatusEnum {
