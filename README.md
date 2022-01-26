@@ -8,7 +8,7 @@ Both subgraphs persist a `Fighter` entity whose id is `${CONTRACT_ADDRESS}${TOKE
 
 `Fighter` attributes are merged seamlessly, allowing developers to make a single GraphQL query from their client and receive data from both L1 and L2 for that entity.
 
-Both subgraphs create `SyncStatus` entities associated with a `Fighter`. The most recent `SyncStatus` will report whether Layer 1 ownership data is synced to the Layer 2 protocol.
+Both subgraphs create `SyncStatus` entities associated with a `Fighter`. The most recent `SyncStatus` will report whether Layer 1 ownership data is synced to the Layer 2 protocol. Fetching the most recent sync status for a fighter will return the current sync status.
 
 This data should not be used alone on the Layer 2, but is intended to be used on your frontend.
 
@@ -60,7 +60,7 @@ Fetch nFighter by ID:
       resilience
       power
       speed
-      syncs(orderBy: timestamp, first: 1, orderDirection: desc) { # One-to-many entity on both L1 and L2
+      syncStatuses(orderBy: timestamp, first: 1, orderDirection: desc) { # One-to-many entity on both L1 and L2
         status
       }
     }
@@ -83,7 +83,7 @@ Fetch nFighters owned by an address (NB: ensure you downcase the address!)
       resilience
       power
       speed
-      syncs(orderBy: timestamp, first: 1, orderDirection: desc) { # One-to-many entity on both L1 and L2
+      syncStatuses(orderBy: timestamp, first: 1, orderDirection: desc) { # One-to-many entity on both L1 and L2
         status
       }
     }

@@ -11,7 +11,7 @@ query getFighter($id: ID! = "0xb3ea7cbb180d834c279b06873b6a971cce7014681") {
     resilience
     power
     speed
-    syncs(orderBy: timestamp, first: 1, orderDirection: desc) { # One-to-many entity on both L1 and L2
+    syncStatuses(orderBy: timestamp, first: 1, orderDirection: desc) { # One-to-many entity on both L1 and L2
       status
     }
   }
