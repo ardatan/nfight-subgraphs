@@ -45,4 +45,4 @@ documents:
 serve:
   browser: true
   playground: true
-  # customServerHandler: ./server.js
+  customServerHandler: ./server.js
