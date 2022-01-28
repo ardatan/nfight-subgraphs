@@ -1,31 +1,40 @@
 const mergeSyncs = async (root, args, context, info) => {
 
   const parent = await context.ownership.Query.syncStatuses({
-    root,
-    args,
-    context,
-    info,
-  });
+      root,
+      args: { first: 1, orderBy: 'timestamp', orderDirection: 'desc', where: { fighter: root.id }},
+      context,
+      info,
+      selectionSet: `{ id timestamp status }`
+
+    });
 
   const child = await context.savestate.Query.syncStatuses({
     root,
-    args,
+    args: { first: 1, orderBy: 'timestamp', orderDirection: 'desc', where: { fighter: root.id }},
     context,
     info,
+    selectionSet: `{ id timestamp status }`
   });
 
-  const sorted = [...child, ...parent].sort((a,b) => a.timestamp < b.timestamp ? 1 : -1).slice(0, args.first || 1);
+  const latest = [...(child.length ? child : []), ...(parent.length ? parent : [])].sort((a,b) => a.timestamp < b.timestamp ? 1 : -1)[0];
 
-  return sorted;
+  return latest;
 };
+
+const latestSync = async (root, args, context, info) => {
+  console.warn("ID", root.id)
+  const latest = await mergeSyncs(root, args, context, info);
+  console.warn("LATEST", latest)
+  return latest.status || 'Unsynced';
+}
+
 
 const resolvers = {
   Fighter: {
-    syncStatuses: mergeSyncs
+    syncStatus: mergeSyncs,
+    syncStatusString: latestSync
   },
-  Query: {
-    syncStatuses: mergeSyncs
-  }
 };
 
   module.exports = { resolvers };

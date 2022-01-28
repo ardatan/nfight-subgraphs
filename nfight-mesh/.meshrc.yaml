@@ -11,6 +11,9 @@ sources:
             - queryFieldName: fighters
               keyField: id
               keyArg: 'where.id_in'
+            - queryFieldName: syncStatuses
+              keyField: id
+              keyArg: 'where.id_in'
 
   - name: savestate
     handler:
@@ -18,34 +21,23 @@ sources:
         endpoint: https://api.thegraph.com/subgraphs/name/sbauch/nfight-gamedata
       batch: false
     transforms:
-    #     - prefix:
-    #         value: SS_
-    #         includeRootOperations: true
-    #         ignore:
-    #           - syncStatus
-    #           - syncStatuses
-    #           - Fighter
-    #           - _SubgraphErrorPolicy_
-        - typeMerging:
-            queryFields:
-              - queryFieldName: fighter
-                keyField: id
-                keyArg: id
+      - typeMerging:
+          queryFields:
+            - queryFieldName: fighter
+              keyField: id
+              keyArg: id
+            - queryFieldName: syncStatus
+              keyField: id
+              keyArg: id
 
+additionalTypeDefs: |
+  extend type Fighter {
+    syncStatus: SyncStatus!
+    syncStatusString: String!
+  }
 
 additionalResolvers:
   - ./resolvers/syncStatus.js
-
-# additionalResolvers:
-#   - targetTypeName: Query
-#     targetFieldName: listQuestionsFromStackOverflow
-#     sourceName: StackExchange # Which source does the target field belong to?
-#     sourceTypeName: Query # Which root type does the target field belong to?
-#     sourceFieldName: listQuestions # What is the source field name?
-#     sourceArgs: # What args does this need to take?
-#       pagesize: "{args.first}"
-#     result: items # We want to extract `items` from the result and return only this one
-
 
 
 documents:
@@ -54,4 +46,4 @@ documents:
 serve:
   browser: true
   playground: true
-  customServerHandler: ./server.js
+  # customServerHandler: ./server.js
