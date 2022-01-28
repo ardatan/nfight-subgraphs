@@ -39,7 +39,6 @@ additionalTypeDefs: |
 additionalResolvers:
   - ./resolvers/syncStatus.js
 
-
 documents:
   - ./operations/**/*.graphql
 
