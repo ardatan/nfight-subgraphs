@@ -9,7 +9,7 @@ const mergeSyncs = async (root, args, context, info) => {
 
     });
 
-  const child = await context.savestate.Query.syncStatuses({
+  const child = await context.savestate.Query.SS_syncStatuses({
     root,
     args: { first: 1, orderBy: 'timestamp', orderDirection: 'desc', where: { fighter: root.id }},
     context,

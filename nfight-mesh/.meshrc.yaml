@@ -21,12 +21,20 @@ sources:
         endpoint: https://api.thegraph.com/subgraphs/name/sbauch/nfight-gamedata
       batch: false
     transforms:
+      - prefix:
+          value: SS_
+          includeRootOperations: true
+          ignore:
+            - syncStatus
+            - syncStatuses
+            - Fighter
+            - _SubgraphErrorPolicy_
       - typeMerging:
           queryFields:
-            - queryFieldName: fighter
+            - queryFieldName: SS_fighter
               keyField: id
               keyArg: id
-            - queryFieldName: syncStatus
+            - queryFieldName: SS_syncStatus
               keyField: id
               keyArg: id
 
@@ -45,4 +53,4 @@ documents:
 serve:
   browser: true
   playground: true
-  customServerHandler: ./server.js
+  # customServerHandler: ./server.js

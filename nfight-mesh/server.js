@@ -27,6 +27,7 @@ const myPlugin = {
 };
 
 module.exports = async ({ getBuiltMesh, documents, logger }) => {
+  console.warn(documents)
   const { schema } = await getBuiltMesh();
   const apolloServer = new ApolloServer({
     schema,
