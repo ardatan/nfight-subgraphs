@@ -1,40 +1,51 @@
-const mergeSyncs = async (root, args, context, info) => {
-
-  const parent = await context.ownership.Query.syncStatuses({
-      root,
-      args: { first: 1, orderBy: 'timestamp', orderDirection: 'desc', where: { fighter: root.id }},
-      context,
-      info,
-      selectionSet: `{ id timestamp status }`
-
-    });
-
-  const child = await context.savestate.Query.SS_syncStatuses({
-    root,
-    args: { first: 1, orderBy: 'timestamp', orderDirection: 'desc', where: { fighter: root.id }},
-    context,
-    info,
-    selectionSet: `{ id timestamp status }`
-  });
-
-  const latest = [...(child.length ? child : []), ...(parent.length ? parent : [])].sort((a,b) => a.timestamp < b.timestamp ? 1 : -1)[0];
-
-  return latest;
-};
-
-const latestSync = async (root, args, context, info) => {
-  console.warn("ID", root.id)
-  const latest = await mergeSyncs(root, args, context, info);
-  console.warn("LATEST", latest)
-  return latest.status || 'Unsynced';
-}
-
-
 const resolvers = {
   Fighter: {
-    syncStatus: mergeSyncs,
-    syncStatusString: latestSync
+    syncStatus: {
+      selectionSet: "{ id }",
+      resolve: async (root, args, context, info) => {
+        const remoteArgs = {
+          first: 1,
+          orderBy: "timestamp",
+          orderDirection: "desc",
+          where: { fighter: id },
+        };
+        // Add timestamp to the selectionSet sent by the gateway
+        const selectionSetFactory = (syncStatusSelectionSet) => /* GraphQL */ `
+             {
+                 ${syncStatusSelectionSet.selections
+                   .map((selection) => selection.name.value)
+                   .join("\n")}
+                 timestamp
+             }
+        `;
+        const results = await Promise.all([
+          context.ownership.Query.syncStatuses({
+            root,
+            args: remoteArgs,
+            selectionSet: selectionSetFactory,
+            context,
+            info,
+          }),
+          context.savestate.Query.SS_syncStatuses({
+            root,
+            args: remoteArgs,
+            selectionSet: selectionSetFactory,
+            context,
+            info,
+          }),
+        ]);
+        return results
+          .flat()
+          .sort((a, b) => (a.timestamp < b.timestamp ? 1 : -1))[0];
+      },
+    },
+  },
+  SyncStatus: { // Not sure about the name of the type
+    status: {
+      selectionSet: "{ status }",
+      resolve: (root) => root.status || "Unsynced",
+    },
   },
 };
 
-  module.exports = { resolvers };
+module.exports = { resolvers };
